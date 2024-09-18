@@ -18,18 +18,23 @@ int main()
         cout << "\n==================================="<<endl;
     }
     
-    // int wt[0] = 0;
-    // for (int i=1; i<n; i++)
-    // {
-    //     wt[i] = 0;
-    //     for (int j=0; j<i; j++){
-    //         wt[i] = wt[i] + bt[j];   //Waiting Time = Waiting Time + Burst Time
-    //     }
-    // }
+
+    // On Process for Waiting Time
+    int wt[processes];
+    for (int i=1; i<processes; i++)
+    {
+        wt[i] = 0;
+        for (int j=0; j<processes; j++){
+            wt[i] = wt[i] + bt[j];   //Waiting Time = Waiting Time + Burst Time
+        }
+        cout << "\n" << wt[i];
+    }
+
+
 
 
     // Output
-    cout << "Process\tArrival Time\tBurst Time";
+    cout << "Process\tArrival Time\tBurst Time\";
     for (int i=0; i<processes; i++){
         cout << "\n" << i << "\t" << at[i] << "\t" << bt[i];
     }
