@@ -30,11 +30,8 @@ int main()
         cout << "\n" << wt[i];
     }
 
-
-
-
     // Output
-    cout << "Process\tArrival Time\tBurst Time\";
+    cout << "Process\tArrival Time\tBurst Time";
     for (int i=0; i<processes; i++){
         cout << "\n" << i << "\t" << at[i] << "\t" << bt[i];
     }
