@@ -55,9 +55,48 @@ int main()
     }
 
     // Display Average Waiting Time
-    cout << "\nAverage Waiting Time: (";
+    cout << "\n\nAverage Waiting Time: (";
     for (int i = 0; i < processes - 1; i++){
         cout << wt[i] << " + ";
     }
     cout << wt[processes - 1] << ") / "<< processes <<" = " << wtTotal / processes;
+
+    // Gantt Chart
+    // cout << "\nGantt Chart for Schedule: "<< endl;
+    // for (int i = 0; i < processes; i++){
+    //     cout << " | " << processName[i] << "\t";
+    // }
+    // cout << "|\n ";
+    // for (int i = 0; i < processes; i++){
+    //     cout << wt[i] << "\t";
+    // }
+    
+    cout << "\nGantt Chart for Schedule: " << endl;
+    
+    // Print top border
+    for (int i = 0; i < processes; i++) {
+        cout << "--------";
+    }
+    cout << "-" << endl;
+
+    // Print process names
+    cout << "|";
+    for (int i = 0; i < processes; i++) {
+        cout << " " << processName[i] << "\t|";
+    }
+    cout << endl;
+
+    // Print bottom border
+    for (int i = 0; i < processes; i++) {
+        cout << "|-------";
+    }
+    cout << "|" << endl;
+
+    // Print start times
+    for (int i = 0; i < processes; i++) {
+        cout << wt[i] << "\t";
+    }
+    cout << bt[processes - 1] + wt[processes - 1] << endl; // Print the last completion time
+
+
 }
