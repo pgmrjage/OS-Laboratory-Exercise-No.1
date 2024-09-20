@@ -1,4 +1,6 @@
 #include <iostream>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
 
@@ -18,6 +20,21 @@ int main()
         cout << "\n==================================="<<endl;
     }
 
+    // Initialize storage for sorted processes
+    vector<pair<int, int>> sortedATBT;
+    for (int i = 0; i < processes; i++){
+        sortedATBT.push_back(make_pair(at[i], bt[i]));
+    }
+
+    // Sort Processes by Arrival Time
+    sort(sortedATBT.begin(), sortedATBT.end());
+
+    // Update AT[] and BT[] with sorted values
+    for (int i = 0; i < processes; i++){
+        at[i] = sortedATBT[i].first;
+        bt[i] = sortedATBT[i].second;
+    }
+
     // Computing for Waiting Time
     float wtTotal = 0;
     wt[0] = 0;
@@ -25,7 +42,6 @@ int main()
         wt[i] = wt[i - 1] + bt[i - 1];  //Waiting Time = Constant Zero (0) + Burst Time
         wtTotal += wt[i];
     }
-    
 
     // Output Section
     cout << "Process\tArrival Time\tBurst Time\tWaiting Time";
@@ -40,7 +56,3 @@ int main()
     }
     cout << wt[processes - 1] << ") / "<< processes <<" = " << wtTotal / processes;
 }
-
-
-// AVG WT is correct if PASUNOD
-// MALI if NONpasunod
