@@ -32,5 +32,5 @@ int main()
         cout << "\n" << i << "\t" << at[i] << "\t\t" << bt[i] << "\t\t" << wt[i];
     }
 
-    return 0;
+
 }
