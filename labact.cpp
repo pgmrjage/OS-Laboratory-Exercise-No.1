@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <string>
+#include <tuple>
 using namespace std;
 
 
@@ -10,20 +12,22 @@ int main()
     cout << "Input how many processes: "; cin >> processes;
 
     int at[processes], bt[processes], wt[processes];
+    string processName[processes];
     cout << "Input ARRIVAL TIME & BURST TIME in each processes: "; 
     cout << "\n==================================="<<endl;
     for (int i=0; i<processes; i++)
     {
-        cout << "Process" << "[" << i + 1 << "]" ; //process header
+        processName[i] = "P" + to_string(i);
+        cout << "Process" << "[" << i << "]" ; //process header
         cout << "\nArrival Time" << "[" << i + 1 << "]" << ": "; cin >> at[i]; // Arrival Time
         cout << "Burst Time" << "[" << i + 1<< "]" << ": "; cin >> bt[i]; // Burst Time
         cout << "\n==================================="<<endl;
     }
 
     // Initialize storage for sorted processes
-    vector<pair<int, int>> sortedATBT;
+    vector<tuple<int, int, string>> sortedATBT;
     for (int i = 0; i < processes; i++){
-        sortedATBT.push_back(make_pair(at[i], bt[i]));
+        sortedATBT.push_back(make_tuple(at[i], bt[i], processName[i]));
     }
 
     // Sort Processes by Arrival Time
@@ -31,8 +35,9 @@ int main()
 
     // Update AT[] and BT[] with sorted values
     for (int i = 0; i < processes; i++){
-        at[i] = sortedATBT[i].first;
-        bt[i] = sortedATBT[i].second;
+        at[i] = get<0>(sortedATBT[i]);
+        bt[i] = get<1>(sortedATBT[i]);
+        processName[i] = get<2>(sortedATBT[i]);
     }
 
     // Computing for Waiting Time
@@ -46,7 +51,7 @@ int main()
     // Output Section
     cout << "Process\tArrival Time\tBurst Time\tWaiting Time";
     for (int i=0; i<processes; i++){
-        cout << "\n" << i << "\t" << at[i] << "\t\t" << bt[i] << "\t\t" << wt[i];
+        cout << "\n" << processName[i] << "\t" << at[i] << "\t\t" << bt[i] << "\t\t" << wt[i];
     }
 
     // Display Average Waiting Time
