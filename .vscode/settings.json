@@ -4,6 +4,8 @@
         "*.embeddedhtml": "html",
         "iostream": "cpp",
         "algorithm": "cpp",
-        "tuple": "cpp"
+        "tuple": "cpp",
+        "ostream": "cpp",
+        "string": "cpp"
     }
 }
