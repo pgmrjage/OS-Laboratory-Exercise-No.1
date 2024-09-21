@@ -96,7 +96,6 @@ int fcfs(int processes){
     return 0;
 }
 
-// On going Process
 int sjf_non_preemptive(int processes){
     int at[processes], bt[processes], wt[processes], ct[processes];
     string processName[processes];
@@ -204,6 +203,9 @@ int sjf_non_preemptive(int processes){
     return 0;
 }
 
+int sjf_preemptive(int processes){
+    return 0;
+}
 
 int main()
 {
@@ -225,6 +227,7 @@ int main()
     }else if (mode == 3){   //SHORT JOB FIRST (preemptive)
         int processes;
         cout << "Input how many processes: "; cin >> processes; 
+        sjf_preemptive(processes);
     }else   
         cout << "Please, Try Again!"; return mode;
     
