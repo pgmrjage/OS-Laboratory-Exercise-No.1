@@ -204,8 +204,82 @@ int sjf_non_preemptive(int processes){
 }
 
 int sjf_preemptive(int processes){
+    int at[processes], bt[processes], remaining_bt[processes], wt[processes], ct[processes], tat[processes];
+    string processName[processes];
+
+    cout << "Input ARRIVAL TIME & BURST TIME for each process:"; 
+    cout << "\n===================================" << endl;
+    for (int i = 0; i < processes; i++) {
+        processName[i] = "P" + to_string(i + 1);
+        cout << "Process [" << i + 1 << "]" << endl; // process header
+        cout << "Arrival Time [" << i + 1 << "] : "; cin >> at[i]; // Arrival Time
+        cout << "Burst Time [" << i + 1 << "] : "; cin >> bt[i]; // Burst Time
+        cout << "===================================" << endl;
+        remaining_bt[i] = bt[i]; // Remaining burst time initially set to burst time
+    }
+
+    int completed = 0, currentTime = 0, minBurstIndex;
+    float wtTotal = 0, tatTotal = 0;
+    bool foundProcess = false;
+
+    // While there are unfinished processes
+    while (completed != processes) {
+        int minBurst = INT_MAX;
+        foundProcess = false;
+
+        // Find the process with the shortest remaining burst time that has arrived
+        for (int i = 0; i < processes; i++) {
+            if (at[i] <= currentTime && remaining_bt[i] > 0 && remaining_bt[i] < minBurst) {
+                minBurst = remaining_bt[i];
+                minBurstIndex = i;
+                foundProcess = true;
+            }
+        }
+
+        if (!foundProcess) {
+            currentTime++; // No process is ready, increment time
+            continue;
+        }
+
+        // Execute the found process
+        remaining_bt[minBurstIndex]--;
+        currentTime++;
+
+        // If the process is completed
+        if (remaining_bt[minBurstIndex] == 0) {
+            completed++;
+            ct[minBurstIndex] = currentTime; // Completion time
+            tat[minBurstIndex] = ct[minBurstIndex] - at[minBurstIndex]; // Turnaround Time
+            wt[minBurstIndex] = tat[minBurstIndex] - bt[minBurstIndex]; // Waiting Time
+            wtTotal += wt[minBurstIndex];
+            tatTotal += tat[minBurstIndex];
+        }
+    }
+
+    // Output Section
+    cout << "Process\tArrival Time\tBurst Time\tCompletion Time\tTurnaround Time\tWaiting Time";
+    for (int i = 0; i < processes; i++) {
+        cout << "\n" << processName[i] << "\t" << at[i] << "\t\t" << bt[i] << "\t\t" << ct[i] << "\t\t" << tat[i] << "\t\t" << wt[i];
+    }
+
+    // Display Average Waiting Time
+    cout << "\n\nAverage Waiting Time: ("; 
+    for (int i = 0; i < processes - 1; i++) {
+        cout << wt[i] << " + ";
+    }
+    cout << wt[processes - 1] << ") / " << processes << " = " << wtTotal / processes;
+
+    // Display Average Turnaround Time
+    cout << "\nAverage Turnaround Time: ("; 
+    for (int i = 0; i < processes - 1; i++) {
+        cout << tat[i] << " + ";
+    }
+    cout << tat[processes - 1] << ") / " << processes << " = " << tatTotal / processes;
+
     return 0;
 }
+
+
 
 int main()
 {
@@ -230,9 +304,4 @@ int main()
         sjf_preemptive(processes);
     }else   
         cout << "Please, Try Again!"; return mode;
-    
-
-        
-
-    
 }
