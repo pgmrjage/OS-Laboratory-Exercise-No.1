@@ -279,14 +279,47 @@ int sjf_preemptive(int processes){
     return 0;
 }
 
+int round_robin(int processes){
+    int at[processes], bt[processes], remaining_bt[processes], wt[processes], ct[processes], tat[processes];
+    string processName[processes];
 
+    cout << "Input ARRIVAL TIME & BURST TIME for each process:"; 
+    cout << "\n===================================" << endl;
+    for (int i = 0; i < processes; i++) {
+        processName[i] = "P" + to_string(i + 1);
+        cout << "Process [" << i + 1 << "]" << endl; // process header
+        cout << "Arrival Time [" << i + 1 << "] : "; cin >> at[i]; // Arrival Time
+        cout << "Burst Time [" << i + 1 << "] : "; cin >> bt[i]; // Burst Time
+        cout << "===================================" << endl;
+        remaining_bt[i] = bt[i]; // Remaining burst time initially set to burst time
+    }
+
+    // Initialize storage for sorted processes
+    vector<tuple<int, int, string>> sortedATBT;
+    for (int i = 0; i < processes; i++){
+        sortedATBT.push_back(make_tuple(at[i], bt[i], processName[i]));
+    }
+
+    // Sort Processes by Arrival Time
+    sort(sortedATBT.begin(), sortedATBT.end());
+
+    // Update AT[] and BT[] with sorted values
+    for (int i = 0; i < processes; i++){
+        at[i] = get<0>(sortedATBT[i]);
+        bt[i] = get<1>(sortedATBT[i]);
+        processName[i] = get<2>(sortedATBT[i]);
+    }
+
+
+    return 0;
+}
 
 int main()
 {
     int mode;
     // Select Mode Section "FCFS, SJF(non-preemp.), SJF(preemp.)"
     cout << "=====================================" <<endl;
-    cout << "[1] - First Come First Serve"<<"\n[2] - SJF (non-preemptive)" << "\n[3] - SJF (preemptive)"<<endl;
+    cout << "[1] - First Come First Serve"<<"\n[2] - SJF (non-preemptive)" << "\n[3] - SJF (preemptive)" << "\n[]"<<endl;
     cout << "=====================================" <<endl;
     cout << "Select Mode of Choice: "; cin >> mode;
     cout << "=====================================" <<endl;
@@ -302,6 +335,10 @@ int main()
         int processes;
         cout << "Input how many processes: "; cin >> processes; 
         sjf_preemptive(processes);
+    }else if (mode == 4){
+        int processes;
+        cout << "Input how many processes: "; cin >> processes;
+        round_robin(processes);
     }else   
         cout << "Please, Try Again!"; return mode;
 }
