@@ -310,6 +310,11 @@ int round_robin(int processes){
         processName[i] = get<2>(sortedATBT[i]);
     }
 
+    // Enter Quantum
+    int quantum;
+    cout << "Input Quantum: "; cin >> quantum;
+
+
 
     return 0;
 }
@@ -319,7 +324,7 @@ int main()
     int mode;
     // Select Mode Section "FCFS, SJF(non-preemp.), SJF(preemp.)"
     cout << "=====================================" <<endl;
-    cout << "[1] - First Come First Serve"<<"\n[2] - SJF (non-preemptive)" << "\n[3] - SJF (preemptive)" << "\n[]"<<endl;
+    cout << "[1] - First Come First Serve"<<"\n[2] - SJF (non-preemptive)" << "\n[3] - SJF (preemptive)" << "\n[4] - Round Robin"<<endl;
     cout << "=====================================" <<endl;
     cout << "Select Mode of Choice: "; cin >> mode;
     cout << "=====================================" <<endl;
