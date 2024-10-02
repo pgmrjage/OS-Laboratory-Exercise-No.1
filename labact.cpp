@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <string>
 #include <tuple>
+#include <iomanip>
 using namespace std;
 
 int fcfs(int processes){
@@ -280,41 +281,74 @@ int sjf_preemptive(int processes){
 }
 
 int round_robin(int processes){
-    int at[processes], bt[processes], remaining_bt[processes], wt[processes], ct[processes], tat[processes];
+    int at[processes], bt[processes], remaining_bt[processes], wt[processes] = {0}, tat[processes], ct[processes];
     string processName[processes];
-
+    
+    // Input Arrival Time and Burst Time
     cout << "Input ARRIVAL TIME & BURST TIME for each process:"; 
-    cout << "\n===================================" << endl;
     for (int i = 0; i < processes; i++) {
         processName[i] = "P" + to_string(i + 1);
-        cout << "Process [" << i + 1 << "]" << endl; // process header
-        cout << "Arrival Time [" << i + 1 << "] : "; cin >> at[i]; // Arrival Time
-        cout << "Burst Time [" << i + 1 << "] : "; cin >> bt[i]; // Burst Time
-        cout << "===================================" << endl;
-        remaining_bt[i] = bt[i]; // Remaining burst time initially set to burst time
+        cout << "Process [" << i + 1 << "]" << endl;
+        cout << "Arrival Time [" << i + 1 << "] : "; cin >> at[i];
+        cout << "Burst Time [" << i + 1 << "] : "; cin >> bt[i];
+        remaining_bt[i] = bt[i]; // Set remaining burst time to burst time
     }
 
-    // Initialize storage for sorted processes
-    vector<tuple<int, int, string>> sortedATBT;
-    for (int i = 0; i < processes; i++){
-        sortedATBT.push_back(make_tuple(at[i], bt[i], processName[i]));
-    }
-
-    // Sort Processes by Arrival Time
-    sort(sortedATBT.begin(), sortedATBT.end());
-
-    // Update AT[] and BT[] with sorted values
-    for (int i = 0; i < processes; i++){
-        at[i] = get<0>(sortedATBT[i]);
-        bt[i] = get<1>(sortedATBT[i]);
-        processName[i] = get<2>(sortedATBT[i]);
-    }
-
-    // Enter Quantum
+    // Quantum Time
     int quantum;
     cout << "Input Quantum: "; cin >> quantum;
 
+    // Variables for tracking time
+    int current_time = 0;
+    vector<string> gantt_chart;
 
+    // Process Scheduling
+    bool done;
+    do {
+        done = true;
+        for (int i = 0; i < processes; i++) {
+            if (remaining_bt[i] > 0) {
+                done = false; // There is still a process remaining
+                if (remaining_bt[i] > quantum) {
+                    current_time += quantum;
+                    remaining_bt[i] -= quantum;
+                    gantt_chart.push_back(processName[i]);
+                } else {
+                    current_time += remaining_bt[i];
+                    wt[i] = current_time - at[i] - bt[i];
+                    tat[i] = current_time - at[i];
+                    remaining_bt[i] = 0;
+                    ct[i] = current_time;
+                    gantt_chart.push_back(processName[i]);
+                }
+            }
+        }
+    } while (!done);
+
+    // Display Output
+    cout << "\nProcess\tArrival Time\tBurst Time\tCompletion Time\tTurnaround Time\tWaiting Time\n";
+    for (int i = 0; i < processes; i++) {
+        cout << processName[i] << "\t" << at[i] << "\t\t" << bt[i] << "\t\t" << ct[i] 
+             << "\t\t" << tat[i] << "\t\t" << wt[i] << endl;
+    }
+
+
+    // Calculate Average Waiting Time
+    float total_wt = 0;
+    for (int i = 0; i < processes; i++) {
+        total_wt += wt[i];
+    }
+    float avg_wt = total_wt / processes;
+
+    // Gantt Chart
+    cout << "\nGantt Chart: ";
+    for (auto &p : gantt_chart) {
+        cout << p << " ";
+    }
+    cout << endl;
+
+    // Display Average Waiting Time
+    cout << "Average Waiting Time: " << fixed << setprecision(2) << avg_wt << endl;
 
     return 0;
 }
