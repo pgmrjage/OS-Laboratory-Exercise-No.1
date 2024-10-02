@@ -356,28 +356,35 @@ int round_robin(int processes){
 int main()
 {
     int mode;
-    // Select Mode Section "FCFS, SJF(non-preemp.), SJF(preemp.)"
-    cout << "=====================================" <<endl;
-    cout << "[1] - First Come First Serve"<<"\n[2] - SJF (non-preemptive)" << "\n[3] - SJF (preemptive)" << "\n[4] - Round Robin"<<endl;
-    cout << "=====================================" <<endl;
-    cout << "Select Mode of Choice: "; cin >> mode;
-    cout << "=====================================" <<endl;
-    if (mode == 1){ //FIRST COME FIRST SERVE
-        int processes;
-        cout << "Input how many processes: "; cin >> processes;
-        fcfs(processes);
-    }else if (mode == 2){   //SHORT JOB FIRST (non-preemptive)
-        int processes;
-        cout << "Input how many processes: "; cin >> processes; 
-        sjf_non_preemptive(processes);
-    }else if (mode == 3){   //SHORT JOB FIRST (preemptive)
-        int processes;
-        cout << "Input how many processes: "; cin >> processes; 
-        sjf_preemptive(processes);
-    }else if (mode == 4){
-        int processes;
-        cout << "Input how many processes: "; cin >> processes;
-        round_robin(processes);
-    }else   
-        cout << "Please, Try Again!"; return mode;
+    char again = 'Y';
+
+    do{
+        // Select Mode Section "FCFS, SJF(non-preemp.), SJF(preemp.)"
+        cout << "=====================================" <<endl;
+        cout << "[1] - First Come First Serve"<<"\n[2] - SJF (non-preemptive)" << "\n[3] - SJF (preemptive)" << "\n[4] - Round Robin"<<endl;
+        cout << "=====================================" <<endl;
+        cout << "Select Mode of Choice: "; cin >> mode;
+        cout << "=====================================" <<endl;
+        if (mode == 1){ //FIRST COME FIRST SERVE
+            int processes;
+            cout << "Input how many processes: "; cin >> processes;
+            fcfs(processes);
+        }else if (mode == 2){   //SHORT JOB FIRST (non-preemptive)
+            int processes;
+            cout << "Input how many processes: "; cin >> processes; 
+            sjf_non_preemptive(processes);
+        }else if (mode == 3){   //SHORT JOB FIRST (preemptive)
+            int processes;
+            cout << "Input how many processes: "; cin >> processes; 
+            sjf_preemptive(processes);
+        }else if (mode == 4){
+            int processes;
+            cout << "Input how many processes: "; cin >> processes;
+            round_robin(processes);
+        }else  {
+            cout << "Wrong Input, Please Try Again [Y/N]: ";  cin >> again ;
+        } 
+    }while (again == 'Y' || again == 'y');
+        system("pause");
+    
 }
